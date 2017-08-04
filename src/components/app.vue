@@ -1,55 +1,81 @@
 <template>
-  <div class="wrap">
-    <div class="menu">
-      <div class="link">
-        <router-link to="/about">about</router-link>
-      </div>
-      <div class="link">
-        <router-link to="/home">home</router-link>
-      </div>
+  <div class="todo-container">
+    <div class="todo-wrap">
+      <add></add>
+      <items :items="items" :delete-one="deleteOne"></items>
+      <bottom :items="items" :select-all="selectAll" :rm-all-check="rmAllCheck"></bottom>
     </div>
-    <div class="content">
-      <router-view></router-view>
-    </div>
-
-
   </div>
-
-
-
 
 </template>
 <script>
-  export default {}
+  import add from './add.vue'
+  import items from './items.vue'
+  import bottom from './bottom.vue'
+  import setLocalstroage from './localStorage/setLocalstorage'
+  export default {
+    data () {
+      return {
+
+      }
+    },
+    created () {
+      let items = setLocalstroage.get()
+      this.items = items
+    },
+    components: {
+      add,
+      items,
+      bottom
+    },
+    methods: {
+      ,
+      deleteOne (index) {
+        this.items.splice(index, 1)
+      },
+      selectAll (isAll) {
+        if (isAll) {
+          this.items = this.items.map(item => {
+            return {
+              text: item.text,
+              complete: true
+            }
+          })
+        } else {
+          this.items = this.items.map(item => {
+            return {
+              text: item.text,
+              complete: false
+            }
+          })
+        }
+      },
+      rmAllCheck () {
+        this.items = this.items.filter(item => {
+          return item.complete === false
+        })
+      }
+    },
+    watch: {
+      items: {
+        handler: setLocalstroage.save,
+        deep: true
+      }
+    }
+  }
 
 </script>
 <style>
-  .wrap{
-    vertical-align: baseline;
+  /*app*/
+  .todo-container {
+    width: 600px;
+    margin: 0 auto;
   }
-.menu{
-  margin-left: 100px;
-  width: 100px;
-  border: 1px solid rgba(0, 0, 0, .2);
-  font-size: 20px;
-  float: left;
+  .todo-container .todo-wrap {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
 
-}
-.link{
-  width: 100%;
-  height: 50px;
-  text-decoration: none;
-  text-align: center;
-  line-height: 50px;
-  border: 1px solid rgba(73, 243, 255, 0.2);
-  border-shadow: 0 0  1px 1px;
-}
-.content{
-  margin-left: 20px;
-  width: 300px;
-  /*height: 100px;*/
-  border: 1px solid rgba(0, 0, 0, .2);
-  font-size: 20px;
-  float: left;
-}
+
 </style>
