@@ -12,7 +12,7 @@ const state = {
     }
   ]
 }
-export default new Vuex({
+export default new Vuex.Store({
   state,
   actions,
   mutations,

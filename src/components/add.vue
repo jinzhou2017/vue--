@@ -6,9 +6,6 @@
 </template>
 <script>
   export default {
-    props: {
-      addItemOne: Function
-    },
     data () {
       return {
         item: ''
@@ -24,7 +21,7 @@
           text: item,
           complete: false
         }
-        this.addItemOne(item)
+        this.$store.dispatch('addItemOne', item)
         this.item = ''
       }
     }

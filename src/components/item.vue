@@ -22,13 +22,12 @@
     },
     props: {
       item: Object,
-      deleteOne: Function,
       index: Number
     },
     methods: {
       removeOne (index) {
         if (confirm(`确定删除${this.item.text}事项吗？`)) {
-          this.deleteOne(index)
+          this.$store.dispatch('deleteOne', index)
         }
       },
       isColor (isEnter) {

@@ -2,8 +2,8 @@
   <div class="todo-container">
     <div class="todo-wrap">
       <add></add>
-      <items :items="items" :delete-one="deleteOne"></items>
-      <bottom :items="items" :select-all="selectAll" :rm-all-check="rmAllCheck"></bottom>
+      <items></items>
+      <bottom></bottom>
     </div>
   </div>
 
@@ -14,11 +14,6 @@
   import bottom from './bottom.vue'
   import setLocalstroage from './localStorage/setLocalstorage'
   export default {
-    data () {
-      return {
-
-      }
-    },
     created () {
       let items = setLocalstroage.get()
       this.items = items
@@ -28,32 +23,9 @@
       items,
       bottom
     },
-    methods: {
-      ,
-      deleteOne (index) {
-        this.items.splice(index, 1)
-      },
-      selectAll (isAll) {
-        if (isAll) {
-          this.items = this.items.map(item => {
-            return {
-              text: item.text,
-              complete: true
-            }
-          })
-        } else {
-          this.items = this.items.map(item => {
-            return {
-              text: item.text,
-              complete: false
-            }
-          })
-        }
-      },
-      rmAllCheck () {
-        this.items = this.items.filter(item => {
-          return item.complete === false
-        })
+    computed: {
+      items () {
+        return this.$store.getters.items
       }
     },
     watch: {

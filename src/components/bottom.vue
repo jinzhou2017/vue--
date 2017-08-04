@@ -12,11 +12,6 @@
 </template>
 <script>
   export default {
-    props: {
-      items: Array,
-      selectAll: Function,
-      rmAllCheck: Function
-    },
     data () {
       return {
         isAll: false
@@ -27,11 +22,19 @@
         return this.items.reduce((length, item) => {
           return (length += item.complete ? 1 : 0)
         }, 0)
+      },
+      items () {
+        return this.$store.getters.items
       }
     },
     watch: {
       isAll: function (newvalue, oldvalue) {
-        this.selectAll(newvalue)
+        this.$store.dispatch('selectAll', newvalue)
+      }
+    },
+    methods: {
+      rmAllCheck () {
+        this.$store.dispatch('rmAllCheck')
       }
     }
   }
